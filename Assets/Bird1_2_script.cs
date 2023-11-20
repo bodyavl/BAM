@@ -19,14 +19,14 @@ public class Bird1_2_script : MonoBehaviour {
     private float proRad;
 
 
-    private void Awake()
+     void Awake()
     {
         springJoint = GetComponent<SpringJoint2D>();
         slingShot = springJoint.connectedBody.transform;
         mouseRay = new Ray(slingShot.position, Vector3.zero);
         frontSlingToP = new Ray(frontSling.transform.position, Vector3.zero);
         stretchLimit2 = stretchLimit * stretchLimit;
-        proRig = GetComponent<Rigidbody2D>();
+        proRig = GetComponent<Rigidbody2D> ();
         CircleCollider2D circle = GetComponent<Collider2D> () as CircleCollider2D;
         proRad = circle.radius;
 
@@ -71,8 +71,7 @@ public class Bird1_2_script : MonoBehaviour {
         Vector3 point = frontSlingToP.GetPoint(slingToProjectile.magnitude + proRad);
         frontSling.SetPosition(1, point);
         backSling.SetPosition(1, point);
-
-
+        
     }
     void OnMouseDown()
     {
@@ -83,7 +82,7 @@ public class Bird1_2_script : MonoBehaviour {
     void OnMouseUp()
     {
         springJoint.enabled = true;
-        proRig.isKinematic  = false;
+        proRig.isKinematic  = false;   
         clicked = false;
     }
     void Drag()
