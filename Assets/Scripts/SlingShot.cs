@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class SlingShot : MonoBehaviour
 {
@@ -85,6 +87,8 @@ public class SlingShot : MonoBehaviour
         currentPosition = idlePosition.position;
     }
 
+    int successfulHits = 0; // Variable to count successful hits
+
     void Shoot()
     {
         bird.isKinematic = false;
@@ -95,7 +99,24 @@ public class SlingShot : MonoBehaviour
 
         bird = null;
         birdCollider = null;
-        Invoke(nameof(CreateBird), 2);
+
+        successfulHits++; // Increment successful hits
+
+        if (successfulHits >= 3) // Check if three successful hits have been made
+        {
+            // Reload the scene after a delay
+            Invoke(nameof(ReloadScene), 2);
+        }
+        else
+        {
+            Invoke(nameof(CreateBird), 2);
+        }
+    }
+
+    void ReloadScene()
+    {
+        // Reload the scene
+        SceneManager.LoadScene(0);
     }
 
     void ResetStrips()
