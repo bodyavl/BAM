@@ -28,6 +28,9 @@ public class SlingShot : MonoBehaviour
 
     public float force;
 
+    int totalBirds = 3; // Total number of birds available
+    int pigsRemaining;
+
     void Start()
     {
         lineRenderers[0].positionCount = 2;
@@ -35,22 +38,55 @@ public class SlingShot : MonoBehaviour
         lineRenderers[0].SetPosition(0, stripPositions[0].position);
         lineRenderers[1].SetPosition(0, stripPositions[1].position);
 
+        pigsRemaining = GameObject.FindGameObjectsWithTag("Pig").Length;
+
         CreateBird();
     }
 
     void CreateBird()
     {
-        bird = Instantiate(birdPrefab).GetComponent<Rigidbody2D>();
-        birdCollider = bird.GetComponent<Collider2D>();
-        birdCollider.enabled = false;
+        pigsRemaining = GameObject.FindGameObjectsWithTag("Pig").Length;
 
-        bird.isKinematic = true;
+        if (totalBirds > 0 && pigsRemaining > 0)
+        {
+            bird = Instantiate(birdPrefab).GetComponent<Rigidbody2D>();
+            birdCollider = bird.GetComponent<Collider2D>();
+            birdCollider.enabled = false;
 
-        ResetStrips();
+            bird.isKinematic = true;
+
+            ResetStrips();
+        }
+        else
+        {
+
+            Invoke(nameof(CheckWinLoseCondition), 4);
+
+        }
+    }
+
+    void CheckWinLoseCondition()
+    {
+
+        if (pigsRemaining > 0)
+        {
+            // Player loses
+            Debug.Log("You lose!");
+            Invoke(nameof(ReloadScene), 2);
+        }
+        else
+        {
+            // Player wins
+            Debug.Log("You win!");
+            Invoke(nameof(ReloadScene), 2);
+
+        }
     }
 
     void Update()
     {
+
+
         if (isMouseDown)
         {
             Vector3 mousePosition = Input.mousePosition;
@@ -102,14 +138,15 @@ public class SlingShot : MonoBehaviour
 
         successfulHits++; // Increment successful hits
 
+        pigsRemaining = GameObject.FindGameObjectsWithTag("Pig").Length;
+
         if (successfulHits >= 3) // Check if three successful hits have been made
         {
-            // Reload the scene after a delay
-            Invoke(nameof(ReloadScene), 2);
+            Invoke(nameof(CheckWinLoseCondition), 5);
         }
         else
         {
-            Invoke(nameof(CreateBird), 2);
+            Invoke(nameof(CreateBird), 5);
         }
     }
 

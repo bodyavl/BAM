@@ -26,5 +26,10 @@ public class Bird : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         collided = true;
+
+        if (collision.gameObject.TryGetComponent<Pig>(out var pig))
+        {
+            pig.OnBirdCollision();
+        }
     }
 }
