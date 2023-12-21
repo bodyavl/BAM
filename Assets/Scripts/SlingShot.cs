@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -67,20 +68,31 @@ public class SlingShot : MonoBehaviour
 
     void CheckWinLoseCondition()
     {
-
         if (pigsRemaining > 0)
         {
             // Player loses
-            Debug.Log("You lose!");
-            Invoke(nameof(ReloadScene), 2);
+            UnityEngine.Debug.Log("You lose!");
+            Invoke(nameof(RestartLevel), 2);
         }
         else
         {
             // Player wins
-            Debug.Log("You win!");
-            Invoke(nameof(ReloadScene), 2);
-
+            UnityEngine.Debug.Log("You win!");
+            Invoke(nameof(ReturnToMenu), 2);
         }
+    }
+
+    void RestartLevel()
+    {
+        // Reload the current scene
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+
+    void ReturnToMenu()
+    {
+        // Assuming your menu scene is at index 0, modify it accordingly
+        SceneManager.LoadScene(0);
     }
 
     void Update()
