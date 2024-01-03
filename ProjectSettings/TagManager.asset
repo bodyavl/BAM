@@ -8,6 +8,9 @@ TagManager:
   - NoReboot
   - YouLost
   - YouWon
+  - BackGround_Music_Slider
+  - BG_MUSIC_CREATED
+  - BackGround_Music_Text
   layers:
   - Default
   - TransparentFX
