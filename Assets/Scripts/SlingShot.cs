@@ -27,6 +27,8 @@ public class SlingShot : MonoBehaviour
     Rigidbody2D bird;
     Collider2D birdCollider;
 
+    GameObject youLost;
+
     public float force;
 
     int totalBirds = 3; // Total number of birds available
@@ -38,6 +40,8 @@ public class SlingShot : MonoBehaviour
         lineRenderers[1].positionCount = 2;
         lineRenderers[0].SetPosition(0, stripPositions[0].position);
         lineRenderers[1].SetPosition(0, stripPositions[1].position);
+
+        youLost = GameObject.Find("YouLost");
 
         pigsRemaining = GameObject.FindGameObjectsWithTag("Pig").Length;
 
@@ -73,7 +77,8 @@ public class SlingShot : MonoBehaviour
             // Player loses
             UnityEngine.Debug.Log("You lose!");
 
-            Invoke(nameof(RestartLevel), 2);
+            youLost.SetActive(true);
+
         }
         else
         {
