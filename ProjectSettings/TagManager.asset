@@ -7,6 +7,7 @@ TagManager:
   - Pig
   - NoReboot
   - YouLost
+  - YouWon
   layers:
   - Default
   - TransparentFX

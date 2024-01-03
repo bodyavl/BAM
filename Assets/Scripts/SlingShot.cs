@@ -18,6 +18,8 @@ public class SlingShot : MonoBehaviour
 
     public float bottomBoundary;
 
+    bool activeLevel = true;
+
     bool isMouseDown;
 
     public GameObject birdPrefab;
@@ -29,10 +31,35 @@ public class SlingShot : MonoBehaviour
 
     GameObject youLost;
 
+    GameObject youWon;
+
+
     public float force;
 
     int totalBirds = 3; // Total number of birds available
     int pigsRemaining;
+
+    void Awake()
+    {
+        youLost = GameObject.FindWithTag("YouLost");
+        youWon = GameObject.FindWithTag("YouWon");
+        if (youWon != null)
+        {
+            youWon.SetActive(false);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("GameObject 'YouWon' is null.");
+        }
+        if (youLost != null)
+        {
+            youLost.SetActive(false);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("GameObject 'YouLost' is null.");
+        }
+    }
 
     void Start()
     {
@@ -41,7 +68,7 @@ public class SlingShot : MonoBehaviour
         lineRenderers[0].SetPosition(0, stripPositions[0].position);
         lineRenderers[1].SetPosition(0, stripPositions[1].position);
 
-        youLost = GameObject.FindWithTag("YouLost");
+
 
         pigsRemaining = GameObject.FindGameObjectsWithTag("Pig").Length;
 
@@ -77,6 +104,8 @@ public class SlingShot : MonoBehaviour
             // Player loses
             UnityEngine.Debug.Log("You lose!");
 
+            activeLevel = false;
+
             if (youLost != null)
             {
                 youLost.SetActive(true); // Перевірка на null перед викликом методу
@@ -89,8 +118,17 @@ public class SlingShot : MonoBehaviour
         else
         {
             // Player wins
+            activeLevel = false;
             UnityEngine.Debug.Log("You win!");
-            Invoke(nameof(GoToNextLevelOrRestart), 2);
+
+            if (youWon != null)
+            {
+                youWon.SetActive(true); // Перевірка на null перед викликом методу
+            }
+            else
+            {
+                UnityEngine.Debug.LogError("GameObject 'YouWon' is null.");
+            }
         }
     }
 
@@ -101,14 +139,6 @@ public class SlingShot : MonoBehaviour
         SceneManager.LoadScene(currentScene.name);
     }
 
-    void GoToNextLevelOrRestart()
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-        UnityEngine.Debug.Log(currentScene.buildIndex);
-
-        if (currentScene.buildIndex < SceneManager.sceneCountInBuildSettings) SceneManager.LoadScene(currentScene.buildIndex + 1);
-        else SceneManager.LoadScene(0);
-    }
 
     void ReturnToMenu()
     {
@@ -118,9 +148,7 @@ public class SlingShot : MonoBehaviour
 
     void Update()
     {
-
-
-        if (isMouseDown)
+        if (isMouseDown && activeLevel)
         {
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = 10;
