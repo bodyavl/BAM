@@ -72,13 +72,14 @@ public class SlingShot : MonoBehaviour
         {
             // Player loses
             UnityEngine.Debug.Log("You lose!");
+
             Invoke(nameof(RestartLevel), 2);
         }
         else
         {
             // Player wins
             UnityEngine.Debug.Log("You win!");
-            Invoke(nameof(ReturnToMenu), 2);
+            Invoke(nameof(GoToNextLevelOrRestart), 2);
         }
     }
 
@@ -87,6 +88,15 @@ public class SlingShot : MonoBehaviour
         // Reload the current scene
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
+    }
+
+    void GoToNextLevelOrRestart()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        UnityEngine.Debug.Log(currentScene.buildIndex);
+
+        if (currentScene.buildIndex < SceneManager.sceneCountInBuildSettings) SceneManager.LoadScene(currentScene.buildIndex + 1);
+        else SceneManager.LoadScene(0);
     }
 
     void ReturnToMenu()
