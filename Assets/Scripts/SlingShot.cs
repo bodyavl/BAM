@@ -41,7 +41,7 @@ public class SlingShot : MonoBehaviour
         lineRenderers[0].SetPosition(0, stripPositions[0].position);
         lineRenderers[1].SetPosition(0, stripPositions[1].position);
 
-        youLost = GameObject.Find("YouLost");
+        youLost = GameObject.FindWithTag("YouLost");
 
         pigsRemaining = GameObject.FindGameObjectsWithTag("Pig").Length;
 
@@ -77,8 +77,14 @@ public class SlingShot : MonoBehaviour
             // Player loses
             UnityEngine.Debug.Log("You lose!");
 
-            youLost.SetActive(true);
-
+            if (youLost != null)
+            {
+                youLost.SetActive(true); // Перевірка на null перед викликом методу
+            }
+            else
+            {
+                UnityEngine.Debug.LogError("GameObject 'YouLost' is null.");
+            }
         }
         else
         {
